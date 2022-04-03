@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,7 +168,7 @@ class DocumentControllerTest {
     @Test
     @Order(7)
     void postDocumentTest() throws Exception {
-        Document document = new Document("doc-5", "Documento 5", "Descrizione Documento 5");
+        Document document = new Document("doc-5", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
 
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
@@ -194,7 +195,7 @@ class DocumentControllerTest {
     @Test
     @Order(8)
     void postDocumentTestKO() throws Exception {
-        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5");
+        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -219,7 +220,7 @@ class DocumentControllerTest {
     @Test
     @Order(9)
     void postDocumentTestKOSec() throws Exception {
-        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5");
+        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
 
         MvcResult mvcResult = mockMvc
@@ -238,7 +239,7 @@ class DocumentControllerTest {
     @Test
     @Order(10)
     void putDocumentTest() throws Exception {
-        Document document = new Document("doc-2", "Documento 2", "Descrizione corretta");
+        Document document = new Document("doc-2", "Documento 2", "Descrizione corretta", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -265,7 +266,7 @@ class DocumentControllerTest {
     @Test
     @Order(11)
     void putDocumentTestKO() throws Exception {
-        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6");
+        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -290,7 +291,7 @@ class DocumentControllerTest {
     @Test
     @Order(12)
     void putDocumentTestKOSec() throws Exception {
-        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6");
+        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6", OffsetDateTime.now());
         String documentStr = objectMapper.writeValueAsString(document);
 
         MvcResult mvcResult = mockMvc

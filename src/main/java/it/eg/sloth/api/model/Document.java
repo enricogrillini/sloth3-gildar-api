@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.OffsetDateTime;
+
 @Data
 @AllArgsConstructor
 
@@ -17,5 +19,8 @@ public class Document {
 
     @Schema(description = "Description", required = true, example = "Descrizione")
     private String description;
+
+    @Schema(description = "Data", required = true, example = "Descrizione")
+    private OffsetDateTime data;
 
 }

@@ -4,6 +4,8 @@ import it.eg.sloth.api.model.Document;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -16,9 +18,9 @@ public class DocumentServices implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         map = new LinkedHashMap<>();
 
-        save(new Document("doc-1", "Contratto", "Contratto tra le parti per sottoscrizione conto corrente"));
-        save(new Document("doc-2", "Recesso", "Norme per il recesso"));
-        save(new Document("doc-3", "Appendice", "Appendice al contratto di sottoscrizione"));
+        save(new Document("doc-1", "Contratto", "Contratto tra le parti per sottoscrizione conto corrente", OffsetDateTime.now()));
+        save(new Document("doc-2", "Recesso", "Norme per il recesso", OffsetDateTime.now()));
+        save(new Document("doc-3", "Appendice", "Appendice al contratto di sottoscrizione", OffsetDateTime.now()));
     }
 
     /**

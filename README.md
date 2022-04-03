@@ -6,6 +6,11 @@
     - http://localhost:8082/v3/api-docs
     - http://localhost:8082/v3/api-docs.yaml
 
+## ENV
+      LC_ALL: en_US.UTF-8
+      TZ: Europe/Rome
+
+
 ## Curl per provare il servizio (su windows usare gitbash)
 
 ```shell
