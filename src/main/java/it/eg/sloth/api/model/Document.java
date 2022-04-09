@@ -3,12 +3,13 @@ package it.eg.sloth.api.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
-
+@NoArgsConstructor
 public class Document {
 
     @Schema(description = "Id", required = true, example = "doc-1")

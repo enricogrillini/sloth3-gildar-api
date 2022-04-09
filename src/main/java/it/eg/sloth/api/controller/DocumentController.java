@@ -1,10 +1,9 @@
 package it.eg.sloth.api.controller;
 
-import it.eg.sloth.api.error.BusinessException;
-import it.eg.sloth.api.error.ResponseCode;
-import it.eg.sloth.api.error.ResponseMessage;
+import it.eg.sloth.api.error.exception.BusinessException;
+import it.eg.sloth.api.error.model.ResponseCode;
+import it.eg.sloth.api.error.model.ResponseMessage;
 import it.eg.sloth.api.model.Document;
-
 import it.eg.sloth.api.service.DocumentServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,9 @@ import java.util.List;
 @RequestMapping("/api/v1/document")
 @Slf4j
 public class DocumentController implements DocumentApi {
+
+    private static final String DOCUMENTO_NON_TOVATO = "Documento non trovato";
+    private static final String DOCUMENTO_GIA_PRESENTE = "Documento già presente";
 
     @Autowired
     private DocumentServices documentServices;
@@ -41,7 +43,7 @@ public class DocumentController implements DocumentApi {
         if (documentServices.getDocument(documentId) != null) {
             return documentServices.getDocument(documentId);
         } else {
-            throw new BusinessException(ResponseCode.DOCUMENTO_NON_TROVATO);
+            throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
         }
     }
 
@@ -55,9 +57,9 @@ public class DocumentController implements DocumentApi {
         if (documentServices.getDocument(documentId) != null) {
             documentServices.delete(documentId);
 
-            return new ResponseMessage(true, ResponseCode.OK, "Documento eliminato correttamente");
+            return new ResponseMessage("Documento eliminato correttamente");
         } else {
-            throw new BusinessException(ResponseCode.DOCUMENTO_NON_TROVATO);
+            throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
         }
     }
 
@@ -71,9 +73,9 @@ public class DocumentController implements DocumentApi {
     public ResponseMessage postDocument(@RequestBody Document document) {
         if (documentServices.getDocument(document.getId()) == null) {
             documentServices.save(document);
-            return new ResponseMessage(true, ResponseCode.OK, "Documento creato correttamente");
+            return new ResponseMessage("Documento creato correttamente");
         } else {
-            throw new BusinessException(ResponseCode.DOCUMENTO_GIA_PRESENTE);
+            throw new BusinessException(DOCUMENTO_GIA_PRESENTE);
         }
     }
 
@@ -86,9 +88,9 @@ public class DocumentController implements DocumentApi {
     public ResponseMessage putDocument(@RequestBody Document document) {
         if (documentServices.getDocument(document.getId()) != null) {
             documentServices.save(document);
-            return new ResponseMessage(true, ResponseCode.OK, "Documento aggiornato correttamente");
+            return new ResponseMessage("Documento aggiornato correttamente");
         } else {
-            throw new BusinessException(ResponseCode.DOCUMENTO_NON_TROVATO);
+            throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
         }
     }
 }

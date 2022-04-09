@@ -1,7 +1,6 @@
 package it.eg.sloth.api.config;
 
-import it.eg.sloth.api.filter.AccessLogFilter;
-import it.eg.sloth.api.filter.JwtAuthenticationCertFilter;
+import it.eg.sloth.api.filter.AuthenticationJwtCertFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,14 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, BASE_URI).permitAll()
 //                .antMatchers(HttpMethod.PUT, BASE_URI).hasAnyAuthority(RULE_WRITER, RULE_ADMIN)
-//                .antMatchers(HttpMethod.POST, BASE_URI).hasAnyAuthority(RULE_WRITER, RULE_ADMIN)
+                .antMatchers(HttpMethod.POST, "/api/v1/security/login").permitAll()
 //                .antMatchers(HttpMethod.DELETE, BASE_URI).hasAuthority(RULE_ADMIN)
                 .antMatchers(WHITELIST).permitAll()
                 //All
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JwtAuthenticationCertFilter(authenticationManager(), "public_key_jwt.pem"))
-                .addFilterBefore(new AccessLogFilter(), JwtAuthenticationCertFilter.class);
+                .addFilter(new AuthenticationJwtCertFilter(authenticationManager(), "public_key_jwt.pem"));
     }
 
 
