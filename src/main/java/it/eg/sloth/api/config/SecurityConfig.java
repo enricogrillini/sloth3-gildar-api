@@ -13,6 +13,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] WHITELIST = {
             // -- swagger ui
+            "/actuator/**",
+            // -- swagger ui
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/swagger-resources/**",
