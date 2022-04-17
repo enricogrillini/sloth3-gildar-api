@@ -3,7 +3,7 @@ package it.eg.sloth.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.eg.sloth.api.error.model.ResponseCode;
 import it.eg.sloth.api.error.model.ResponseMessage;
-import it.eg.sloth.api.model.Document;
+import it.eg.sloth.api.model.api.Document;
 import it.eg.sloth.core.token.JwtUtil;
 import it.eg.sloth.core.token.TokenUtil;
 import org.junit.jupiter.api.*;
@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 
@@ -74,7 +75,7 @@ class DocumentControllerTest {
 
         MvcResult mvcResult = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get(URI_ID, "doc-1")
+                        .get(URI_ID, 1)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header(TokenUtil.TOKEN_HEADER, TokenUtil.TOKEN_PREFIX + jwtToken))
                 .andReturn();
@@ -84,7 +85,7 @@ class DocumentControllerTest {
 
         // Verifico che lo Documento sia corretto
         Document documento = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Document.class);
-        assertEquals("doc-1", documento.getId());
+        assertEquals(1, documento.getIdDocument());
     }
 
     @Test
@@ -94,7 +95,7 @@ class DocumentControllerTest {
 
         MvcResult mvcResult = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get(URI_ID, "XX")
+                        .get(URI_ID, 0)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header(TokenUtil.TOKEN_HEADER, TokenUtil.TOKEN_PREFIX + jwtToken))
                 .andReturn();
@@ -116,7 +117,7 @@ class DocumentControllerTest {
 
         MvcResult mvcResult = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete(URI_ID, "doc-1")
+                        .delete(URI_ID, 1)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header(TokenUtil.TOKEN_HEADER, TokenUtil.TOKEN_PREFIX + jwtToken))
                 .andReturn();
@@ -138,7 +139,7 @@ class DocumentControllerTest {
 
         MvcResult mvcResult = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete(URI_ID, "XX")
+                        .delete(URI_ID, 0)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header(TokenUtil.TOKEN_HEADER, TokenUtil.TOKEN_PREFIX + jwtToken))
                 .andReturn();
@@ -170,7 +171,7 @@ class DocumentControllerTest {
     @Test
     @Order(7)
     void postDocumentTest() throws Exception {
-        Document document = new Document("doc-5", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
+        Document document = new Document(5, "Documento 5", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
 
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
@@ -196,7 +197,7 @@ class DocumentControllerTest {
     @Test
     @Order(8)
     void postDocumentTestKO() throws Exception {
-        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
+        Document document = new Document(2, "Documento 5", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -222,7 +223,7 @@ class DocumentControllerTest {
     @Test
     @Order(9)
     void postDocumentTestKOSec() throws Exception {
-        Document document = new Document("doc-2", "Documento 5", "Descrizione Documento 5", OffsetDateTime.now());
+        Document document = new Document(2, "Documento 5", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
 
         MvcResult mvcResult = mockMvc
@@ -241,7 +242,7 @@ class DocumentControllerTest {
     @Test
     @Order(10)
     void putDocumentTest() throws Exception {
-        Document document = new Document("doc-2", "Documento 2", "Descrizione corretta", OffsetDateTime.now());
+        Document document = new Document(2, "Documento 5", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -267,7 +268,7 @@ class DocumentControllerTest {
     @Test
     @Order(11)
     void putDocumentTestKO() throws Exception {
-        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6", OffsetDateTime.now());
+        Document document = new Document(6, "Documento 6", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
         String jwtToken = JwtUtil.createJWT("www.iam.com", "writer-2", "gildar-api", 3600 * 1000, new HashMap<>(), privateKey);
 
@@ -293,7 +294,7 @@ class DocumentControllerTest {
     @Test
     @Order(12)
     void putDocumentTestKOSec() throws Exception {
-        Document document = new Document("doc-6", "Documento 6", "Descrizione Documento 6", OffsetDateTime.now());
+        Document document = new Document(6, "Documento 6", LocalDate.now(), 50.4, true);
         String documentStr = objectMapper.writeValueAsString(document);
 
         MvcResult mvcResult = mockMvc

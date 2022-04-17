@@ -3,7 +3,7 @@ package it.eg.sloth.api.controller;
 import it.eg.sloth.api.error.exception.BusinessException;
 import it.eg.sloth.api.error.model.ResponseCode;
 import it.eg.sloth.api.error.model.ResponseMessage;
-import it.eg.sloth.api.model.Document;
+import it.eg.sloth.api.model.api.Document;
 import it.eg.sloth.api.service.DocumentServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class DocumentController implements DocumentApi {
      * @return
      */
     @GetMapping(path = "/{documentId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Document getDocument(@PathVariable String documentId) {
+    public Document getDocument(@PathVariable Integer documentId) {
         if (documentServices.getDocument(documentId) != null) {
             return documentServices.getDocument(documentId);
         } else {
@@ -53,7 +53,7 @@ public class DocumentController implements DocumentApi {
      * @return
      */
     @DeleteMapping(path = "/{documentId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseMessage deleteDocument(@PathVariable String documentId) {
+    public ResponseMessage deleteDocument(@PathVariable Integer documentId) {
         if (documentServices.getDocument(documentId) != null) {
             documentServices.delete(documentId);
 
@@ -71,7 +71,7 @@ public class DocumentController implements DocumentApi {
      */
     @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage postDocument(@RequestBody Document document) {
-        if (documentServices.getDocument(document.getId()) == null) {
+        if (documentServices.getDocument(document.getIdDocument()) == null) {
             documentServices.save(document);
             return new ResponseMessage("Documento creato correttamente");
         } else {
@@ -86,7 +86,7 @@ public class DocumentController implements DocumentApi {
      */
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage putDocument(@RequestBody Document document) {
-        if (documentServices.getDocument(document.getId()) != null) {
+        if (documentServices.getDocument(document.getIdDocument()) != null) {
             documentServices.save(document);
             return new ResponseMessage("Documento aggiornato correttamente");
         } else {

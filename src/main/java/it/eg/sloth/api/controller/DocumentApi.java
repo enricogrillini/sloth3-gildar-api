@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.eg.sloth.api.error.model.ResponseMessage;
-import it.eg.sloth.api.model.Document;
+import it.eg.sloth.api.model.api.Document;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,7 +30,7 @@ public interface DocumentApi {
             @ApiResponse(responseCode = "200", description = "Documento trovato", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = Document.class))}),
             @ApiResponse(responseCode = "400", description = "Errore nel reperimento del documento", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseMessage.class))})
     })
-    Document getDocument(@PathVariable String documentId);
+    Document getDocument(@PathVariable Integer documentId);
 
 
     @Operation(summary = "Elimina un documento")
@@ -38,7 +38,7 @@ public interface DocumentApi {
             @ApiResponse(responseCode = "200", description = "Ok", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseMessage.class))}),
             @ApiResponse(responseCode = "400", description = "Impossibile cancellare il documento", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ResponseMessage.class))})
     })
-    ResponseMessage deleteDocument(@PathVariable String documentId);
+    ResponseMessage deleteDocument(@PathVariable Integer documentId);
 
 
     @Operation(summary = "Aggiunge un documento")

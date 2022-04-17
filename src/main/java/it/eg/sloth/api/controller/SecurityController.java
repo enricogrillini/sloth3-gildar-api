@@ -1,7 +1,7 @@
 package it.eg.sloth.api.controller;
 
-import it.eg.sloth.api.model.Jwt;
-import it.eg.sloth.api.model.Login;
+import it.eg.sloth.api.model.api.Jwt;
+import it.eg.sloth.api.model.api.Login;
 import it.eg.sloth.core.token.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;

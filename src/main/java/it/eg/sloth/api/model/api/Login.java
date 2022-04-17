@@ -1,4 +1,4 @@
-package it.eg.sloth.api.model;
+package it.eg.sloth.api.model.api;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

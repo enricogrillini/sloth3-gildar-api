@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.eg.sloth.api.error.model.ResponseMessage;
-import it.eg.sloth.api.model.Jwt;
-import it.eg.sloth.api.model.Login;
+import it.eg.sloth.api.model.api.Jwt;
+import it.eg.sloth.api.model.api.Login;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Security API", description = "Rest API - Login")

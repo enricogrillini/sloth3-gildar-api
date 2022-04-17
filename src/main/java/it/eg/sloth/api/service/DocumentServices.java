@@ -1,9 +1,10 @@
 package it.eg.sloth.api.service;
 
-import it.eg.sloth.api.model.Document;
+import it.eg.sloth.api.model.api.Document;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -11,15 +12,15 @@ import java.util.*;
 public class DocumentServices implements InitializingBean {
 
 
-    private Map<String, Document> map;
+    private Map<Integer, Document> map;
 
     @Override
     public void afterPropertiesSet() {
         map = new LinkedHashMap<>();
 
-        save(new Document("doc-1", "Contratto", "Contratto tra le parti per sottoscrizione conto corrente", OffsetDateTime.now()));
-        save(new Document("doc-2", "Recesso", "Norme per il recesso", OffsetDateTime.now()));
-        save(new Document("doc-3", "Appendice", "Appendice al contratto di sottoscrizione", OffsetDateTime.now()));
+        save(new Document(1, "Contratto", LocalDate.now(), 50.4, true));
+        save(new Document(2, "Recesso", LocalDate.now(), 50.4, true));
+        save(new Document(3, "Appendice", LocalDate.now(), 50.4, true));
     }
 
     /**
@@ -37,7 +38,7 @@ public class DocumentServices implements InitializingBean {
      * @param documentId
      * @return
      */
-    public Document getDocument(String documentId) {
+    public Document getDocument(Integer documentId) {
         return map.get(documentId);
     }
 
@@ -46,7 +47,7 @@ public class DocumentServices implements InitializingBean {
      *
      * @param documentId
      */
-    public void delete(String documentId) {
+    public void delete(Integer documentId) {
         map.remove(documentId);
     }
 
@@ -56,7 +57,7 @@ public class DocumentServices implements InitializingBean {
      * @param document
      */
     public void save(Document document) {
-        map.put(document.getId(), document);
+        map.put(document.getIdDocument(), document);
     }
 
 
