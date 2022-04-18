@@ -4,7 +4,10 @@ import it.eg.sloth.api.error.exception.BusinessException;
 import it.eg.sloth.api.error.model.ResponseCode;
 import it.eg.sloth.api.error.model.ResponseMessage;
 import it.eg.sloth.api.model.api.Document;
-import it.eg.sloth.api.service.DocumentServices;
+import it.eg.sloth.api.model.db.DocumentPojo;
+import it.eg.sloth.api.model.mapper.DocumentMapper;
+import it.eg.sloth.api.service.DocumentRepository;
+import it.eg.sloth.core.base.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +24,7 @@ public class DocumentController implements DocumentApi {
     private static final String DOCUMENTO_GIA_PRESENTE = "Documento già presente";
 
     @Autowired
-    private DocumentServices documentServices;
+    private DocumentRepository documentRepository;
 
     /**
      * Ritorna la lista di tutti i documenti
@@ -30,7 +33,9 @@ public class DocumentController implements DocumentApi {
      */
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Document> getDocuments() {
-        return documentServices.getDocuments();
+        List<DocumentPojo> list = documentRepository.select(null);
+
+        return DocumentMapper.INSTANCE.documentPojoToApi(list);
     }
 
     /**
@@ -40,8 +45,9 @@ public class DocumentController implements DocumentApi {
      */
     @GetMapping(path = "/{documentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Document getDocument(@PathVariable Integer documentId) {
-        if (documentServices.getDocument(documentId) != null) {
-            return documentServices.getDocument(documentId);
+        List<DocumentPojo> list = documentRepository.select(documentId);
+        if (!list.isEmpty()) {
+            return DocumentMapper.INSTANCE.documentPojoToApi(list.get(0));
         } else {
             throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
         }
@@ -54,8 +60,8 @@ public class DocumentController implements DocumentApi {
      */
     @DeleteMapping(path = "/{documentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage deleteDocument(@PathVariable Integer documentId) {
-        if (documentServices.getDocument(documentId) != null) {
-            documentServices.delete(documentId);
+        if (!documentRepository.select(documentId).isEmpty()) {
+            documentRepository.delete(documentId);
 
             return new ResponseMessage("Documento eliminato correttamente");
         } else {
@@ -71,11 +77,15 @@ public class DocumentController implements DocumentApi {
      */
     @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage postDocument(@RequestBody Document document) {
-        if (documentServices.getDocument(document.getIdDocument()) == null) {
-            documentServices.save(document);
-            return new ResponseMessage("Documento creato correttamente");
-        } else {
+        if (ObjectUtil.isNull(document.getIdDocument())) {
+            throw new BusinessException("Specificare l'idDocument", ResponseCode.BUSINESS_ERROR);
+        } else if (!documentRepository.select(document.getIdDocument()).isEmpty()) {
             throw new BusinessException(DOCUMENTO_GIA_PRESENTE);
+        } else {
+            DocumentPojo documentPojo = DocumentMapper.INSTANCE.documentApiToPojo(document);
+            documentRepository.insert(documentPojo);
+
+            return new ResponseMessage("Documento creato correttamente");
         }
     }
 
@@ -86,11 +96,15 @@ public class DocumentController implements DocumentApi {
      */
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage putDocument(@RequestBody Document document) {
-        if (documentServices.getDocument(document.getIdDocument()) != null) {
-            documentServices.save(document);
-            return new ResponseMessage("Documento aggiornato correttamente");
-        } else {
+        if (ObjectUtil.isNull(document.getIdDocument())) {
+            throw new BusinessException("Specificare l'idDocument", ResponseCode.BUSINESS_ERROR);
+        } else if (documentRepository.select(document.getIdDocument()).isEmpty()) {
             throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
+        } else {
+            DocumentPojo documentPojo = DocumentMapper.INSTANCE.documentApiToPojo(document);
+            documentRepository.update(documentPojo);
+
+            return new ResponseMessage("Documento aggiornato correttamente");
         }
     }
 }

@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/v3/api-docs.yaml"
     };
 
-    public static final String BASE_URI = "/api/v1/document/**";
+    public static final String BASE_URI = "/api/v1/**";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

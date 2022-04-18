@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,12 +14,15 @@ import java.time.OffsetDateTime;
 public class Document {
 
     @Schema(description = "Id", required = true, example = "15")
+    @NotNull
     Integer idDocument;
 
     @Schema(description = "Name", required = true, example = "Titolo")
+    @NotNull
     String name;
 
     @Schema(description = "Document date", required = true)
+    @NotNull
     LocalDate documentDate;
 
     @Schema(description = "Cost", required = false)
