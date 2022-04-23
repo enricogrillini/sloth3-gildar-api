@@ -77,7 +77,7 @@ public class DocumentController implements DocumentApi {
      */
     @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage postDocument(@RequestBody Document document) {
-        if (ObjectUtil.isNull(document.getIdDocument())) {
+        if (ObjectUtil.isEmpty(document.getIdDocument())) {
             throw new BusinessException("Specificare l'idDocument", ResponseCode.BUSINESS_ERROR);
         } else if (!documentRepository.select(document.getIdDocument()).isEmpty()) {
             throw new BusinessException(DOCUMENTO_GIA_PRESENTE);
@@ -96,7 +96,7 @@ public class DocumentController implements DocumentApi {
      */
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseMessage putDocument(@RequestBody Document document) {
-        if (ObjectUtil.isNull(document.getIdDocument())) {
+        if (ObjectUtil.isEmpty(document.getIdDocument())) {
             throw new BusinessException("Specificare l'idDocument", ResponseCode.BUSINESS_ERROR);
         } else if (documentRepository.select(document.getIdDocument()).isEmpty()) {
             throw new BusinessException(DOCUMENTO_NON_TOVATO, ResponseCode.NOT_FOUND);
