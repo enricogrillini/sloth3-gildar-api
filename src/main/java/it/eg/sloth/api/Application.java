@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+import java.util.Locale;
+
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Document API", version = "${app.version}", description = "Rest API example: Document API"))
+@OpenAPIDefinition(info = @Info(title = "Document API", version = "${info.app.version}", description = "Rest API example: Document API"))
 @SecurityScheme(name = "bearerAuth", scheme = "bearer", bearerFormat = "JWT", type = SecuritySchemeType.HTTP)
 public class Application {
     public static void main (String[] args) {

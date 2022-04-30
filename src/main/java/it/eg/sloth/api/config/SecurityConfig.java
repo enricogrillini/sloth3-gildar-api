@@ -29,9 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, BASE_URI).permitAll()
-//                .antMatchers(HttpMethod.PUT, BASE_URI).hasAnyAuthority(RULE_WRITER, RULE_ADMIN)
                 .antMatchers(HttpMethod.POST, "/api/v1/security/login").permitAll()
+                .antMatchers(BASE_URI).authenticated()
 //                .antMatchers(HttpMethod.DELETE, BASE_URI).hasAuthority(RULE_ADMIN)
                 .antMatchers(WHITELIST).permitAll()
                 //All

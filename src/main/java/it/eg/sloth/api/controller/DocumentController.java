@@ -10,9 +10,13 @@ import it.eg.sloth.api.service.DocumentRepository;
 import it.eg.sloth.core.base.ObjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -84,6 +88,10 @@ public class DocumentController implements DocumentApi {
         } else {
             DocumentPojo documentPojo = DocumentMapper.INSTANCE.documentApiToPojo(document);
             documentRepository.insert(documentPojo);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            documentPojo.setUserName(auth.getName());
+            documentPojo.setDataUltimoAggiornamento(LocalDateTime.now());
 
             return new ResponseMessage("Documento creato correttamente");
         }

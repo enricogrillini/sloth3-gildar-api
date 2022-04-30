@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -14,9 +15,9 @@ public class DocumentRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String SQL_INSERT = "Insert Into Document (Iddocument, Name, DocumentDate, Cost, Flagactive) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT = "Insert Into Document (Iddocument, Name, DocumentDate, Cost, Flagactive, userName, dataUltimoAggiornamento) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SQL_UPDATE = "Update Document set Iddocument = ?, Name = ?, DocumentDate = ?, Cost = ?, Flagactive = ? where Iddocument = ?";
+    private static final String SQL_UPDATE = "Update Document set Iddocument = ?, Name = ?, DocumentDate = ?, Cost = ?, Flagactive = ?, userName = ?, dataUltimoAggiornamento = ?  where Iddocument = ?";
 
     private static final String SQL_DELETE = "Delete From Document where idDocument = ?";
 
@@ -37,7 +38,9 @@ public class DocumentRepository {
                 documentPojo.getName(),
                 documentPojo.getDocumentDate(),
                 documentPojo.getCost(),
-                documentPojo.getFlagActive());
+                documentPojo.getFlagActive(),
+                documentPojo.getUserName(),
+                documentPojo.getDataUltimoAggiornamento());
     }
 
     public int update(DocumentPojo documentPojo) {
@@ -47,6 +50,8 @@ public class DocumentRepository {
                 documentPojo.getDocumentDate(),
                 documentPojo.getCost(),
                 documentPojo.getFlagActive(),
+                documentPojo.getUserName(),
+                documentPojo.getDataUltimoAggiornamento(),
                 documentPojo.getIdDocument());
     }
 
