@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:13.6
+    container_name: gildar-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: example
+
+#  api:
+#    build:
+#      context: "./api-openjdk"
+#    image: api-openjdk:11.0.15.0-jdk
+#    container_name: gildar-api
+#    restart: always
+#    depends_on:
+#      - postgres
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - "TZ=Europe/Rome"
+#      - "LANG=it_IT.UTF-8"
+#      - "LC_ALL=it_IT.UTF-8"
+#      - "DB_URL=jdbc:postgresql://postgres:5432/postgres"
+#      - "DB_USER=gildar"
+#      - "DB_PASSWORD=gildar"
+#    command: bash -c "cp /tmp/api.jar /opt/api.jar && sleep 3 && java -jar /opt/api.jar"
+#    volumes:
+#      - "../target/gildar-api-1.0.0-SNAPSHOT.jar:/tmp/api.jar"
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "200k"
+#        max-file: "5"
+
+volumes:
+  postgres-data:
